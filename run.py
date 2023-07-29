@@ -2,17 +2,17 @@ import compute
 import compute_pure
 
 if __name__ == "__main__":
-    result = compute.determine_speed(1000)
-    print("result is ", result)
+    iterations = 10000
 
-    result2 = compute_pure.determine_speed(1000)
-    print("result2 is ", result2)
+    stopNow = 1000
 
-    factor = result2 / result
-
-    if (factor < 1):
-        print("Cython is ", factor, "X slower than Python")
-    elif (factor == 1):
-        print("Cython and Python are the same speed")
-    elif (factor > 1):
-        print("Cython is ", factor, "X faster than Python")
+    result_C = compute.test_perf(iterations, stopNow)
+    result_P = compute_pure.test_perf(iterations, stopNow)
+    
+    ratio = result_P / result_C
+    if (ratio > 1):
+        print("Python is ", ratio, " X slower than Cython")
+    elif(ratio == 1):
+        print("Python is just as fast as Cython")
+    elif (ratio < 1):
+        print("Python is ", ratio, " X faster than Cython")

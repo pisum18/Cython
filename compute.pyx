@@ -1,28 +1,32 @@
 import Cython
-import numpy as np
+import random
 import timeit
-import time
-import cProfile
 
-def main():
-    cdef int i, j, k
-    k = 1000
+def mainLoop(endHere = 1000):
     
-    cdef int[1000] h
-    #cdef int[1000] g
 
-    g = [0]*1000
+    stopNow = endHere
+    #cdef float stopNow
+    running = True
+    largeNumber = 0
+    #cdef bint running = True
 
+    #cdef float largeNumber = 0
+    while running:
+        if (largeNumber >= stopNow):
+            running = False
 
-    for i in range(k):
-        for j in range(k):
-            g[i] = i * j
+        largeNumber += random.randint(0, 1)
 
-def determine_speed(iterations = 1000000):
-    time_taken = timeit.timeit(main, number = iterations)
-    return time_taken
+def test_perf(iterations, stopNow):
+
+    timer = timeit.timeit("mainLoop", globals=globals(), number = iterations)
+    return timer
 
 if __name__ == "__main__":
-    time_taken = timeit.timeit(main)
-    print("time taken is", time_taken)
+    print("hello world")
 
+    stopNow = 1000
+    
+    timer = timeit.timeit("mainLoop(stopNow)", globals=globals(), number=1000)
+    print("It took ", timer, " seconds")

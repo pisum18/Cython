@@ -1,39 +1,25 @@
-import numpy as np
+import random
 import timeit
-import time
-import pstats
-import cProfile
 
-def main():
-    k = 1000
+def mainLoop(stopNow = 1000):
     
-    h = []
-    g = [0]*1000
+    running = True
+    largeNumber = 0
 
+    while running:
+        if (largeNumber >= stopNow):
+            running = False
 
-    for i in range(k):
-        for j in range(k):
-            g[i] = i * j
+        largeNumber += random.randint(0, 1)
 
-def determine_speed(iterations = 1000000):
-    time_taken = timeit.timeit(main, number = iterations)
-    return time_taken
-
-def profile_speed(iterations = 1000000):
-    cProfile.runctx("determine_speed(iterations)", globals=globals(), locals=locals(), filename="determine_speed_stats")
-    p = pstats.Stats("determine_speed_stats")
-    p.sort_stats("cumulative").print_stats()
-
+def test_perf(iterations, stopNow):
+    timer = timeit.timeit(mainLoop, number = iterations)
+    return timer
 
 if __name__ == "__main__":
+    print("hello world")
 
-    # profile_speed(1000)
-    iterations = 1000
-
-    cProfile.runctx("determine_speed(iterations)", globals=globals(), locals=locals(), filename="determine_speed_stats")
-    p = pstats.Stats("determine_speed_stats")
-    p.sort_stats("cumulative").print_stats()
+    stopNow = 1000
     
-    # time_taken = timeit.timeit(main)
-    # print("time taken is", time_taken)
-
+    timer = timeit.timeit("mainLoop(stopNow)", globals=globals(), number=1000)
+    print("It took ", timer, " seconds")
